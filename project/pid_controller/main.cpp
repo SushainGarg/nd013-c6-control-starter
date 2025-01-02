@@ -218,12 +218,14 @@ int main ()
   /**
   * TODO (Step 1): create pid (pid_steer) for steer command and initialize values
   **/
-
-
+  PID pid_steer;
+  pid_steer.Init(1 , 1 , 1 , 1.2 , -1.2);
   // initialize pid throttle
   /**
   * TODO (Step 1): create pid (pid_throttle) for throttle command and initialize values
   **/
+  PID pid_throttle;
+  pid_throttle.Init(1 , 1 , 1 , 1 , -1);
 
   PID pid_steer = PID();
   PID pid_throttle = PID();
@@ -289,11 +291,25 @@ int main ()
           * TODO (step 3): uncomment these lines
           **/
 //           // Update the delta time with the previous command
-//           pid_steer.UpdateDeltaTime(new_delta_time);
+          pid_steer.UpdateDeltaTime(new_delta_time);
 
           // Compute steer error
-          double error_steer;
-
+          // to compute steering angle we determine the angle between the car's current position and the next target point 
+          // on planned trajectory. This is done using the atan2 function which computes the angle in radians of the line
+          // connecting the 2 points reltive to the +ve x-axis 
+          double point_x = x_points[x_points.size() - 1];
+          double point_y = y_points[y_points.size() - 1];
+          // the desired angle is calculated as 
+          // desired_angle = arctan2(y(next) - y(position) , x(next) - x(position))
+          // x(position) , y(position) = current position
+          // x(next) , y(next) = coordinates of next point on trajectory
+          // arctan2(dy,dx) = returns angle in radians formed by vector(dy,dx) relative to the +ve x-axis
+          double desired_angle = std::atan2(point_y - y_position , point_x - x_position);
+          // Justification for atan2 instead of atan
+          // considers signs of both dy and dx to determine correct quadrant for angle ensuring range from -pi to pi
+          // arctan(dy,dx) only gives results in [-pi/2 , pi/2] thus require additional check for quadrants.
+          // arctan2 handles dx = 0(vertical lines) avoiding division by 0
+          double error_steer = desired_angle - yaw;
 
           double steer_output;
 
@@ -306,17 +322,17 @@ int main ()
           * TODO (step 3): uncomment these lines
           **/
 //           // Compute control to apply
-//           pid_steer.UpdateError(error_steer);
-//           steer_output = pid_steer.TotalError();
+          pid_steer.UpdateError(error_steer);
+          steer_output = pid_steer.TotalError();
 
 //           // Save data
-//           file_steer.seekg(std::ios::beg);
-//           for(int j=0; j < i - 1; ++j) {
-//               file_steer.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-//           }
-//           file_steer  << i ;
-//           file_steer  << " " << error_steer;
-//           file_steer  << " " << steer_output << endl;
+          file_steer.seekg(std::ios::beg);
+          for(int j=0; j < i - 1; ++j) {
+              file_steer.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+          }
+          file_steer  << i ;
+          file_steer  << " " << error_steer;
+          file_steer  << " " << steer_output << endl;
 
           ////////////////////////////////////////
           // Throttle control
@@ -326,7 +342,7 @@ int main ()
           * TODO (step 2): uncomment these lines
           **/
 //           // Update the delta time with the previous command
-//           pid_throttle.UpdateDeltaTime(new_delta_time);
+          pid_throttle.UpdateDeltaTime(new_delta_time);
 
           // Compute error of speed
           double error_throttle;
@@ -334,10 +350,8 @@ int main ()
           * TODO (step 2): compute the throttle error (error_throttle) from the position and the desired speed
           **/
           // modify the following line for step 2
-          error_throttle = 0;
-
-
-
+          // The throttle PID error is computed as the difference between the desired speed and the actual speed, clamped within [−1,1].
+          error_throttle = v_points[v_points.size() -1] - velocity;
           double throttle_output;
           double brake_output;
 
@@ -345,27 +359,27 @@ int main ()
           * TODO (step 2): uncomment these lines
           **/
 //           // Compute control to apply
-//           pid_throttle.UpdateError(error_throttle);
-//           double throttle = pid_throttle.TotalError();
+          pid_throttle.UpdateError(error_throttle);
+          double throttle = pid_throttle.TotalError();
 
 //           // Adapt the negative throttle to break
-//           if (throttle > 0.0) {
-//             throttle_output = throttle;
-//             brake_output = 0;
-//           } else {
-//             throttle_output = 0;
-//             brake_output = -throttle;
-//           }
+          if (throttle > 0.0) {
+            throttle_output = throttle;
+            brake_output = 0;
+          } else {
+            throttle_output = 0;
+            brake_output = -throttle;
+          }
 
 //           // Save data
-//           file_throttle.seekg(std::ios::beg);
-//           for(int j=0; j < i - 1; ++j){
-//               file_throttle.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
-//           }
-//           file_throttle  << i ;
-//           file_throttle  << " " << error_throttle;
-//           file_throttle  << " " << brake_output;
-//           file_throttle  << " " << throttle_output << endl;
+          file_throttle.seekg(std::ios::beg);
+          for(int j=0; j < i - 1; ++j){
+              file_throttle.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+          }
+          file_throttle  << i ;
+          file_throttle  << " " << error_throttle;
+          file_throttle  << " " << brake_output;
+          file_throttle  << " " << throttle_output << endl;
 
 
           // Send control
