@@ -24,9 +24,9 @@ void PID::Init(double Kpi, double Kii, double Kdi, double output_lim_maxi, doubl
    _Kdi = Kdi;
    _output_lim_maxi = output_lim_maxi;
    _output_lim_mini = output_lim_mini;
-   _dKpi = 1; 
-   _dKii = 1;
-   _dKdi = 1;
+  //  _dKpi = 1; 
+  //  _dKii = 1;
+  //  _dKdi = 1;
 }
 
 
@@ -34,12 +34,15 @@ void PID::UpdateError(double cte) {
    /**
    * TODO: Update PID errors based on cte.
    **/
-  if(_cte == 9999){
+  if(_cte == -1){
    _cte = cte;
   }
-  _diff_cte = (cte - _cte)/_delta_time;
-  _cte = cte;
+  if(_delta_time != 0){
+    _diff_cte = (cte - _cte)/_delta_time;
+      _cte = cte;
   _icte += _cte;
+  }
+
 }
 
 double PID::TotalError() {

@@ -21,7 +21,7 @@ public:
 //    double _dKii;
 //    double _dKdi;
 //    double _tol = P_ERR_TOLERANCE;
-   double _cte = 9999;
+   double _cte = -1;
 //    double _prev_cte;
    double _icte = 0;
    double _diff_cte;
@@ -40,7 +40,7 @@ public:
     /*
     * Delta time
     */
-   double _delta_time;
+   double _delta_time = 0;
 
     /*
     * Constructor
