@@ -218,21 +218,21 @@ int main ()
   /**
   * TODO (Step 1): create pid (pid_steer) for steer command and initialize values
   **/
-  PID pid_steer;
-  pid_steer.Init(1 , 1 , 1 , 1.2 , -1.2);
+  PID pid_steer = PID();
+  pid_steer.Init(0.3 , 0.002 , 0.1 , 1.2 , -1.2);
   // initialize pid throttle
   /**
   * TODO (Step 1): create pid (pid_throttle) for throttle command and initialize values
   **/
-  PID pid_throttle;
-  pid_throttle.Init(1 , 1 , 1 , 1 , -1);
-
-  PID pid_steer = PID();
   PID pid_throttle = PID();
+  pid_throttle.Init(0.15 , 0.001 , 0.02 , 1 , -1);
+
+  // PID pid_steer = PID();
+  // PID pid_throttle = PID();
 
   h.onMessage([&pid_steer, &pid_throttle, &new_delta_time, &timer, &prev_timer, &i, &prev_timer](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode)
   {
-        auto s = hasData(data);
+       auto s = hasData(data);
 
         if (s != "") {
 
@@ -293,12 +293,26 @@ int main ()
 //           // Update the delta time with the previous command
           pid_steer.UpdateDeltaTime(new_delta_time);
 
+          int ind = 0;
+          for(int i = 0; i< x_points.size(); i++){
+            // Distance between vehicle Pos and target points on spiral.
+            double dist = ((x_position - x_points[i])**2 + (y_position - y_points[i])**2);
+            if(i = 0){
+              min = dist;
+            }
+            else{
+              if(dist < min){
+                ind = i
+                min = dist
+              }
+            }
+          }
           // Compute steer error
           // to compute steering angle we determine the angle between the car's current position and the next target point 
           // on planned trajectory. This is done using the atan2 function which computes the angle in radians of the line
           // connecting the 2 points reltive to the +ve x-axis 
-          double point_x = x_points[x_points.size() - 1];
-          double point_y = y_points[y_points.size() - 1];
+          double point_x = x_points[ind];
+          double point_y = y_points[ind];
           // the desired angle is calculated as 
           // desired_angle = arctan2(y(next) - y(position) , x(next) - x(position))
           // x(position) , y(position) = current position
@@ -309,7 +323,8 @@ int main ()
           // considers signs of both dy and dx to determine correct quadrant for angle ensuring range from -pi to pi
           // arctan(dy,dx) only gives results in [-pi/2 , pi/2] thus require additional check for quadrants.
           // arctan2 handles dx = 0(vertical lines) avoiding division by 0
-          double error_steer = desired_angle - yaw;
+          // y_position - y_points[ind] - used to incorporate lateral distance in error calculation
+          double error_steer = yaw - desired_angle + y_position - y_points[ind];
 
           double steer_output;
 
@@ -351,7 +366,7 @@ int main ()
           **/
           // modify the following line for step 2
           // The throttle PID error is computed as the difference between the desired speed and the actual speed, clamped within [−1,1].
-          error_throttle = v_points[v_points.size() -1] - velocity;
+          error_throttle = v_points[ind] - velocity;
           double throttle_output;
           double brake_output;
 
