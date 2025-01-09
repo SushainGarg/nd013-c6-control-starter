@@ -295,16 +295,17 @@ int main ()
           pid_steer.UpdateDeltaTime(new_delta_time);
 
           int ind = 0;
+          double min;
           for(int i = 0; i< x_points.size(); i++){
             // Distance between vehicle Pos and target points on spiral.
-            double dist = ((x_position - x_points[i])**2 + (y_position - y_points[i])**2);
+            double dist = (pow(x_position - x_points[i] , 2) + pow(y_position - y_points[i] , 2));
             if(i = 0){
               min = dist;
             }
             else{
               if(dist < min){
-                ind = i
-                min = dist
+                ind = i;
+                min = dist;
               }
             }
           }
@@ -326,9 +327,7 @@ int main ()
           // arctan2 handles dx = 0(vertical lines) avoiding division by 0
           // y_position - y_points[ind] - used to incorporate lateral distance in error calculation
           double error_steer = yaw - desired_angle + y_position - y_points[ind];
-
           double steer_output;
-
           /**
           * TODO (step 3): compute the steer error (error_steer) from the position and the desired trajectory
           **/
@@ -340,7 +339,7 @@ int main ()
 //           // Compute control to apply
            std::cout << "yaw: " << yaw << " new_delta_time: " << new_delta_time <<std::endl;
           pid_steer.UpdateError(error_steer);
-          double steer_output = pid_steer.TotalError();
+          steer_output = pid_steer.TotalError();
 
 //           // Save data
           file_steer.seekg(std::ios::beg);
