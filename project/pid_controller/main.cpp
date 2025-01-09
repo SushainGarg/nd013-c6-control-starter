@@ -219,7 +219,7 @@ int main ()
   * TODO (Step 1): create pid (pid_steer) for steer command and initialize values
   **/
   PID pid_steer = PID();
-  pid_steer.Init(0.3, 0.005 ,0.07, 1.2 , -1.2);
+  pid_steer.Init(0.3, 0.002 ,0.05, 1.2 , -1.2);
   // initialize pid throttle
   /**
   * TODO (Step 1): create pid (pid_throttle) for throttle command and initialize values
@@ -310,10 +310,8 @@ int main ()
           // considers signs of both dy and dx to determine correct quadrant for angle ensuring range from -pi to pi
           // arctan(dy,dx) only gives results in [-pi/2 , pi/2] thus require additional check for quadrants.
           // arctan2 handles dx = 0(vertical lines) avoiding division by 0
-          yaw = yaw * (M_PI / 180.0);
+          //yaw = yaw * (M_PI / 180.0);
           double error_steer = desired_angle - yaw;
-
-          double steer_output;
 
           /**
           * TODO (step 3): compute the steer error (error_steer) from the position and the desired trajectory
@@ -326,7 +324,7 @@ int main ()
 //           // Compute control to apply
            std::cout << "yaw: " << yaw << " new_delta_time: " << new_delta_time <<std::endl;
           pid_steer.UpdateError(error_steer);
-          steer_output = pid_steer.TotalError();
+          double steer_output = pid_steer.TotalError();
 
 //           // Save data
           file_steer.seekg(std::ios::beg);
@@ -369,11 +367,11 @@ int main ()
 
 //           // Adapt the negative throttle to break
           if (throttle > 0.0) {
+            throttle_output = throttle;
+            brake_output = 0;
+          } else {
             throttle_output = 0;
             brake_output = throttle;
-          } else {
-            throttle_output = -throttle;
-            brake_output = 0;
           }
 
 //           // Save data
