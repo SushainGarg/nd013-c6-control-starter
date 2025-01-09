@@ -282,6 +282,7 @@ int main ()
           time(&timer);
           new_delta_time = difftime(timer, prev_timer);
           prev_timer = timer;
+          std::cout << "new_delta_time: " << new_delta_time << std::endl;
 
           ////////////////////////////////////////
           // Steering control
@@ -337,8 +338,9 @@ int main ()
           * TODO (step 3): uncomment these lines
           **/
 //           // Compute control to apply
+           std::cout << "yaw: " << yaw << " new_delta_time: " << new_delta_time <<std::endl;
           pid_steer.UpdateError(error_steer);
-          steer_output = pid_steer.TotalError();
+          double steer_output = pid_steer.TotalError();
 
 //           // Save data
           file_steer.seekg(std::ios::beg);
@@ -383,7 +385,7 @@ int main ()
             brake_output = 0;
           } else {
             throttle_output = 0;
-            brake_output = -throttle;
+            brake_output = throttle;
           }
 
 //           // Save data
