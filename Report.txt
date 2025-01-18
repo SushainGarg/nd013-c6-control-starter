@@ -2,7 +2,7 @@
 The plot depict the performance of a PID controller in a steering control system. The 'steer error' plot shows the deviation of the vehicle's actual heading from the desired heading over time. The 'steer output' shows the signal by the PID controller to correct the steering angle and minimize error. Considering a correct implementation of the PID controller, the steer error should converge to zero quickly and smoothly, while the steer output should show corrective steering inputs without excessive oscillations or overshoot.
 
 ## Throttle PLot
-The plots# shows the performance of the PID controller in a throttle control system. The 'throttle error' shows the difference between the desired vehicle speed and the actual vehicle speed over time. The 'throttle output' displays the signal by the PID controller to adjust and maintain the desired speed. Considering a correct implementation of the PID controller, the throttle error should converge to zero smoothly, while the throttle output should provide appropriate adjustments to the velocity to maintain the desired speed without excessive oscillations or overshoot.
+The plots shows the performance of the PID controller in a throttle control system. The 'throttle error' shows the difference between the desired vehicle speed and the actual vehicle speed over time. The 'throttle output' displays the signal by the PID controller to adjust and maintain the desired speed. Considering a correct implementation of the PID controller, the throttle error should converge to zero smoothly, while the throttle output should provide appropriate adjustments to the velocity to maintain the desired speed without excessive oscillations or overshoot.
 
 ## Explanation of PID behaviour on PLots to be expected: 
 
