@@ -367,7 +367,7 @@ int main ()
           **/
           // modify the following line for step 2
           // The throttle PID error is computed as the difference between the desired speed and the actual speed, clamped within [−1,1].
-          error_throttle = v_points[ind] - velocity;
+          error_throttle = velocity - v_points[ind];
           double throttle_output;
           double brake_output;
 
