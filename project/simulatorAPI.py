@@ -436,9 +436,9 @@ class HUD(object):
             'Location:% 20s' % ('(% 5.1f, % 5.1f)' % (t.location.x, t.location.y)),
             'Height:  % 18.0f m' % t.location.z,
             '',
-            'Steer: %0.2f' % steer,
-            'Throttle: %0.2f' % throttle,
-            'Brake: %0.2f' % brake,
+            # 'Steer: %0.2f' % steer,
+            # 'Throttle: %0.2f' % throttle,
+            # 'Brake: %0.2f' % brake,
         ]
         self._info_text += [
             '',
