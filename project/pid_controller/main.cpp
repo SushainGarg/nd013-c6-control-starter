@@ -326,7 +326,7 @@ int main ()
           // arctan(dy,dx) only gives results in [-pi/2 , pi/2] thus require additional check for quadrants.
           // arctan2 handles dx = 0(vertical lines) avoiding division by 0
           // y_position - y_points[ind] - used to incorporate lateral distance in error calculation
-          double error_steer = yaw - desired_angle;
+          double error_steer = desired_angle-yaw;
           double steer_output;
           /**
           * TODO (step 3): compute the steer error (error_steer) from the position and the desired trajectory
