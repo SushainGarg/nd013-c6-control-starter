@@ -56,7 +56,7 @@ double PID::TotalError() {
     * The code should return a value in the interval [output_lim_mini, output_lim_maxi]
    */
 
-    double control = (-_Kpi * _cte) + (_Kdi * _diff_cte) + (_Kii * _icte);
+    double control = (-_Kpi * _cte) - (_Kdi * _diff_cte) - (_Kii * _icte);
 
     if(control > _output_lim_maxi){
       control = _output_lim_maxi;
