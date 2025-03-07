@@ -284,6 +284,7 @@ int main ()
           // Save time and compute delta time
           time(&timer);
           new_delta_time = difftime(timer, prev_timer);
+	  pid_steer.UpdateDeltaTime(new_delta_time);
           prev_timer = timer;
 
           ////////////////////////////////////////
@@ -294,14 +295,14 @@ int main ()
           * TODO (step 3): uncomment these lines
           **/
 //           // Update the delta time with the previous command
-	  pid_steer.UpdateDeltaTime(new_delta_time);
+	  
 
           int ind = 0;
           double min;
           for(int i = 0; i< x_points.size(); i++){
             // Distance between vehicle Pos and target points on spiral.
             double dist = (pow(x_position - x_points[i] , 2) + pow(y_position - y_points[i] , 2));
-            if(i = 0){
+            if(i == 0){
               min = dist;
             }
             else{
@@ -363,7 +364,7 @@ int main ()
           /**
           * TODO (step 2): uncomment these lines
           **/
-//          pid_throttle.UpdateDeltaTime(new_delta_time);
+          pid_throttle.UpdateDeltaTime(new_delta_time);
 
           // Compute error of speed
           double error_throttle;
