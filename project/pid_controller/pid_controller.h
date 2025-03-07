@@ -41,6 +41,9 @@ public:
     * Delta time
     */
    double _delta_time = 0.0;
+   bool _first_time = true;
+   double _prev_cte = 0.0;
+   double _prev_diff_cte = 0.0; 
 
     /*
     * Constructor
