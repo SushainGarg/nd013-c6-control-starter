@@ -312,16 +312,17 @@ int main ()
               }
             }
           }
-
+	error_steer = yaw -angle_between_points(x_points[close_id], y_points[close_id],x_position,y_position);
+	double steer_output;
 		// to compute steering angle we determine the angle between the car's current position and the next target point 
           // on planned trajectory. This is done using the atan2 function which computes the angle in radians of the line
           // connecting the 2 points reltive to the +ve x-axis 
          // on planned trajectory. This is done using the atan2 function which computes the angle in radians of the line
 	// connecting the 2 points reltive to the +ve x-axis
-	double point_x = x_points[ind];
-	double point_y = y_points[ind];
+	// double point_x = x_points[ind];
+	// double point_y = y_points[ind];
 
-	double desired_angle = std::atan2(point_y - y_position, point_x - x_position);
+	// double desired_angle = std::atan2(point_y - y_position, point_x - x_position);
 	
 	// Calculate the vector from the car to the path point
 	// double car_to_point_x = point_x - x_position;
@@ -347,8 +348,8 @@ int main ()
 	
 	// Calculate the error
 	  // double error_steer = cross_product;
-	  double error_steer = -desired_angle;
-          double steer_output;
+	  // double error_steer = -desired_angle;
+          
 
           /**
           * TODO (step 3): compute the steer error (error_steer) from the position and the desired trajectory
@@ -389,7 +390,7 @@ int main ()
           **/
           // modify the following line for step 2
           // The throttle PID error is computed as the difference between the desired speed and the actual speed, clamped within [−1,1].
-          error_throttle = velocity - v_points[ind];
+          error_throttle = v_points.back()-velocity;;
           double throttle_output;
           double brake_output;
           /**
