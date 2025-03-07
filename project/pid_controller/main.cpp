@@ -324,30 +324,30 @@ int main ()
 	double desired_angle = std::atan2(point_y - y_position, point_x - x_position);
 	
 	// Calculate the vector from the car to the path point
-	double car_to_point_x = point_x - x_position;
-	double car_to_point_y = point_y - y_position;
+	// double car_to_point_x = point_x - x_position;
+	// double car_to_point_y = point_y - y_position;
 	
-	// Calculate the vector tangent to the path (if there's a previous point)
-	double tangent_x = 0.0;
-	double tangent_y = 0.0;
-	if (ind > 0) {
-	    tangent_x = x_points[ind] - x_points[ind - 1];
-	    tangent_y = y_points[ind] - y_points[ind - 1];
-	} else {
-	    // If no previous point, use the angle from the desired point to the vehicle
-	    tangent_x = cos(desired_angle);
-	    tangent_y = sin(desired_angle);
-	}
+	// // Calculate the vector tangent to the path (if there's a previous point)
+	// double tangent_x = 0.0;
+	// double tangent_y = 0.0;
+	// if (ind > 0) {
+	//     tangent_x = x_points[ind] - x_points[ind - 1];
+	//     tangent_y = y_points[ind] - y_points[ind - 1];
+	// } else {
+	//     // If no previous point, use the angle from the desired point to the vehicle
+	//     tangent_x = cos(desired_angle);
+	//     tangent_y = sin(desired_angle);
+	// }
 	
-	// Calculate the cross product (z-component)
-	double cross_product = car_to_point_x * tangent_y - car_to_point_y * tangent_x;
+	// // Calculate the cross product (z-component)
+	// double cross_product = car_to_point_x * tangent_y - car_to_point_y * tangent_x;
 	
-	// Calculate the magnitude of the car_to_point vector
-	double magnitude = sqrt(car_to_point_x * car_to_point_x + car_to_point_y * car_to_point_y);
+	// // Calculate the magnitude of the car_to_point vector
+	// double magnitude = sqrt(car_to_point_x * car_to_point_x + car_to_point_y * car_to_point_y);
 	
 	// Calculate the error
 	  // double error_steer = cross_product;
-	  double error_steer = desired_angle;
+	  double error_steer = -desired_angle;
           double steer_output;
 
           /**
