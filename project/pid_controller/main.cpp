@@ -316,20 +316,38 @@ int main ()
 		// to compute steering angle we determine the angle between the car's current position and the next target point 
           // on planned trajectory. This is done using the atan2 function which computes the angle in radians of the line
           // connecting the 2 points reltive to the +ve x-axis 
-          double point_x = x_points[ind];
-          double point_y = y_points[ind];
-          // the desired angle is calculated as 
-          // desired_angle = arctan2(y(next) - y(position) , x(next) - x(position))
-          // x(position) , y(position) = current position
-          // x(next) , y(next) = coordinates of next point on trajectory
-          // arctan2(dy,dx) = returns angle in radians formed by vector(dy,dx) relative to the +ve x-axis
-          double desired_angle = std::atan2(point_y - y_position , point_x - x_position);
-          // Justification for atan2 instead of atan
-          // considers signs of both dy and dx to determine correct quadrant for angle ensuring range from -pi to pi
-          // arctan(dy,dx) only gives results in [-pi/2 , pi/2] thus require additional check for quadrants.
-          // arctan2 handles dx = 0(vertical lines) avoiding division by 0
-          // y_position - y_points[ind] - used to incorporate lateral distance in error calculation
-          double error_steer = desired_angle-yaw;
+         // on planned trajectory. This is done using the atan2 function which computes the angle in radians of the line
+	// connecting the 2 points reltive to the +ve x-axis
+	double point_x = x_points[ind];
+	double point_y = y_points[ind];
+
+	double desired_angle = std::atan2(point_y - y_position, point_x - x_position);
+	
+	// Calculate the vector from the car to the path point
+	double car_to_point_x = point_x - x_position;
+	double car_to_point_y = point_y - y_position;
+	
+	// Calculate the vector tangent to the path (if there's a previous point)
+	double tangent_x = 0.0;
+	double tangent_y = 0.0;
+	if (ind > 0) {
+	    tangent_x = x_points[ind] - x_points[ind - 1];
+	    tangent_y = y_points[ind] - y_points[ind - 1];
+	} else {
+	    // If no previous point, use the angle from the desired point to the vehicle
+	    tangent_x = cos(desired_angle);
+	    tangent_y = sin(desired_angle);
+	}
+	
+	// Calculate the cross product (z-component)
+	double cross_product = car_to_point_x * tangent_y - car_to_point_y * tangent_x;
+	
+	// Calculate the magnitude of the car_to_point vector
+	double magnitude = sqrt(car_to_point_x * car_to_point_x + car_to_point_y * car_to_point_y);
+	
+	// Calculate the error
+	  // double error_steer = cross_product;
+	  double error_steer = desired_angle;
           double steer_output;
 
           /**
@@ -354,8 +372,6 @@ int main ()
           file_steer  << i ;
           file_steer  << " " << error_steer;
           file_steer  << " " << steer_output << endl;
-//           pid_steer.UpdateError(error_steer);
-//           steer_output = pid_steer.TotalError();
 
           ////////////////////////////////////////
           // Throttle control
