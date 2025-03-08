@@ -39,22 +39,20 @@ void PID::Init(double Kpi, double Kii, double Kdi, double output_lim_maxi, doubl
 
 void PID::UpdateError(double cte) {
    _cte = cte;
-   _prev_cte = _cte;
    _icte += _cte * _delta_time;
-   _prev_diff_cte = _diff_cte;
    // using integral windup here, reffered from multiple sources
-   if(_output_lim_maxi > _prev_cte){
-      i_max = _output_lim_maxi - _prev_cte
+   if(_output_lim_maxi > _cte){
+      i_max = _output_lim_maxi - _cte
    }
    else{
       i_max = 0.0
    }
-  if (_output_lim_min < _prev_cte){
-     i_min = _output_lim_min - _prev_cte;
-     }
+  if (_output_lim_min < _cte){
+     i_max = _output_lim_min - _cte;
+   }
   else{
       i_min = 0.0;
-     }
+   }
    if(i_cte > i_max){
       i_cte = i_max
    }
@@ -66,7 +64,8 @@ void PID::UpdateError(double cte) {
    } else {
        _diff_cte = _prev_diff_cte;
    }
-
+   _prev_cte = _cte;
+   _prev_diff_cte = _diff_cte;
 }
 
 double PID::TotalError() {
