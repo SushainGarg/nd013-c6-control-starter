@@ -16,34 +16,32 @@ public:
 
     /*
     * Errors
-    */
-//    double _dKpi;
-//    double _dKii;
-//    double _dKdi;
-//    double _tol = P_ERR_TOLERANCE;
-   double _cte = 0.0;
-//    double _prev_cte;
-   double _icte = 0.0;
-   double _diff_cte = 0.0;
+    */  
+    double PError;
+    double IError;
+    double DError;
+    double preverr;
+
+
     /*
     * Coefficients
     */
-   double _Kpi;
-   double _Kii; 
-   double _Kdi;
+    double Kpi;
+    double Kdi;    
+    double Kii;
+
     /*
     * Output limits
     */
-   double _output_lim_maxi;
-   double _output_lim_mini;
+    double output_lim_maxi;
+    double output_lim_mini;
+    double lim_min_integ;
+    double lim_max_integ;
   
     /*
     * Delta time
     */
-   double _delta_time = 0.0;
-   bool _first_time = true;
-   double _prev_cte = 0.0;
-   double _prev_diff_cte = 0.0; 
+    double new_delta_time;
 
     /*
     * Constructor
@@ -73,9 +71,7 @@ public:
     /*
     * Update the delta time.
     */
-    void UpdateDeltaTime(double new_delta_time);
+    double UpdateDeltaTime(double new_delta_time);
 };
 
 #endif //PID_CONTROLLER_H
-
-
