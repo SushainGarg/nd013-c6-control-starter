@@ -298,21 +298,15 @@ int main ()
 	  
 
           int ind = 0;
-          double min;
           for(int i = 0; i< x_points.size(); i++){
             // Distance between vehicle Pos and target points on spiral.
-            double dist = (pow(x_position - x_points[i] , 2) + pow(y_position - y_points[i] , 2));
-            if(i == 0){
-              min = dist;
-            }
-            else{
-              if(dist < min){
-                ind = i;
-                min = dist;
-              }
-            }
+            double dist = (pow((x_position - x_points[ind]) , 2) + pow((y_position - y_points[ind]) , 2));
+	    double temp_dist = (pow((x_position - x_points[ind]) , 2) + pow((y_position - y_points[ind]) , 2));
+            if(temp_dist < dist){
+	    	ind = i;
+	    }
           }
-	error_steer = yaw -angle_between_points(x_points[close_id], y_points[close_id],x_position,y_position);
+	error_steer = yaw -angle_between_points(x_points[ind], y_points[ind],x_position,y_position);
 	double steer_output;
 		// to compute steering angle we determine the angle between the car's current position and the next target point 
           // on planned trajectory. This is done using the atan2 function which computes the angle in radians of the line
