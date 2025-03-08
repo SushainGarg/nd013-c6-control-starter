@@ -41,24 +41,24 @@ void PID::UpdateError(double cte) {
    _cte = cte;
    _icte += _cte * _delta_time;
    // using integral windup here, reffered from multiple sources
-   if(_output_lim_maxi > _cte){
-      i_max = _output_lim_maxi - _cte
-   }
-   else{
-      i_max = 0.0
-   }
-  if (_output_lim_min < _cte){
-     i_max = _output_lim_min - _cte;
-   }
-  else{
-      i_min = 0.0;
-   }
-   if(i_cte > i_max){
-      i_cte = i_max
-   }
-   else if(i_cte < i_max){
-      i_cte = i_min
-   }
+  //  if(_output_lim_maxi > _cte){
+  //     i_max = _output_lim_maxi - _cte
+  //  }
+  //  else{
+  //     i_max = 0.0
+  //  }
+  // if (_output_lim_min < _cte){
+  //    i_max = _output_lim_min - _cte;
+  //  }
+  // else{
+  //     i_min = 0.0;
+  //  }
+  //  if(i_cte > i_max){
+  //     i_cte = i_max
+  //  }
+  //  else if(i_cte < i_max){
+  //     i_cte = i_min
+  //  }
    if (_delta_time > 0) {
          _diff_cte = (cte - _prev_cte) / _delta_time;
    } else {
@@ -74,7 +74,7 @@ double PID::TotalError() {
     * The code should return a value in the interval [output_lim_mini, output_lim_maxi]
    */
 
-    double control = (_Kpi * _cte) + (_Kdi * _diff_cte) + (_Kii * _icte);
+    double control = (-_Kpi * _cte) - (_Kdi * _diff_cte) - (_Kii * _icte);
 
     if(control > _output_lim_maxi){
       control = _output_lim_maxi;
