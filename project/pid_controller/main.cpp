@@ -306,7 +306,7 @@ int main ()
 	    	ind = i;
 	    }
           }
-	error_steer = yaw -angle_between_points(x_points[ind], y_points[ind],x_position,y_position);
+	error_steer = angle_between_points(x_points[ind], y_points[ind],x_position,y_position) - yaw;
 	double steer_output;
 		// to compute steering angle we determine the angle between the car's current position and the next target point 
           // on planned trajectory. This is done using the atan2 function which computes the angle in radians of the line
