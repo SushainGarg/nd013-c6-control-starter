@@ -1,11 +1,11 @@
 ## Steer Plot
-![alt text](<Screenshot 2025-03-09 170315.png>)
+![alt text](plots/steer_plot.png)
 
 Steer PID kp , ki , kd = [(0.25 , 0.025 , 0.025]
 The plot depict the performance of a PID controller in a steering control system. The 'steer error' plot shows the deviation of the vehicle's actual heading from the desired heading over time. As we can see the steering error is minimised as the iterations progress, we can also see a very high deviation after 300 iterations, suspected to be caused due to the waypoints defined by the system. The PID controller, tries to decrease this error as much as possible , we cn see this from the interval of 300-350 iterations. It is also seen that as the effort is put to decrease error, the erro instead increase, which indicates sign flipping/ flipping of orientation of the motor.
 
 ## Throttle PLot
-![](<Screenshot 2025-03-09 170326.png>)
+![alt text](plots/throttle_plot.png)
 
 The plots shows the performance of the PID controller in a throttle control system. The 'throttle error' shows the difference between the desired vehicle speed and the actual vehicle speed over time. The 'throttle output' displays the signal by the PID controller to adjust and maintain the desired speed. We can see a very discontinous graph, due to the nature of throttle as a parameter, but as is observed, as the throttle error increase, it is adjusted to bring it back to target.
 
