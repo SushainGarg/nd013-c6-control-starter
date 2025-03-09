@@ -317,7 +317,7 @@ int main ()
           // on planned trajectory. This is done using the atan2 function which computes the angle in radians of the line
           // connecting the 2 points reltive to the +ve x-axis 
           double point_x = x_points[ind];
-          double point_y = y_points[ind];
+          double point_y = y_points[ind] - yaw;
           // the desired angle is calculated as 
           // desired_angle = arctan2(y(next) - y(position) , x(next) - x(position))
           // x(position) , y(position) = current position
@@ -329,7 +329,7 @@ int main ()
           // arctan(dy,dx) only gives results in [-pi/2 , pi/2] thus require additional check for quadrants.
           // arctan2 handles dx = 0(vertical lines) avoiding division by 0
           // y_position - y_points[ind] - used to incorporate lateral distance in error calculation
-          double error_steer = desired_angle-yaw;
+          double error_steer = desired_angle;
           double steer_output;
 
           /**
